@@ -83,4 +83,24 @@ class ApiController extends AbstractController
             "Deleted succesfully!"
         ]);
     }
+
+
+    #[Route('/api/get_api/{OrderBy}', name: 'get_api', methods:"GET")]
+    public function get_api(ManagerRegistry $doctrine): Response
+    {
+        $data = $doctrine->getRepository(Lekarstwo::class)->findAll();
+
+        foreach($data as $d){
+            $res [] = [
+                'id' => $d->getId(),
+                'nazwa_leku' => $d->getNazwaLeku(),
+                'producent' => $d->getProducent(),
+                'data_utworzenia' => $d->getdataUtworzenia(),
+                'data_modyfikacji' => $d->getDataModyfikacji()
+            ];
+        }
+        return $this->json([
+            $res
+        ]);
+    }
 }
