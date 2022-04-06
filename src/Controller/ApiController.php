@@ -22,15 +22,21 @@ class ApiController extends AbstractController
     }
 
 
-    #[Route('/api/post_api', name: 'post_api', methods:"POST")]
-    public function post_api(ManagerRegistry $doctrine, Request $req): Response
+    #[Route('/api/post_api/{producent_number}', name: 'post_api', methods:"POST")]
+    public function post_api(ManagerRegistry $doctrine, Request $req, $producent_number): Response
     {
         $medicament = new Lekarstwo();
         $param = json_decode($req->getContent(), true);
 
+        $allowed_producent = array(
+            0 => 'Vet-nam',
+            1 => 'Vet-wam',
+            2 => 'Vet-dam',
+            3 => 'Vet-mam',
+        );
         
         $medicament->setNazwaLeku($param['nazwa_leku']);
-        $medicament->setProducent($param['producent']);
+        $medicament->setProducent($allowed_producent[$producent_number]);
         $date = new DateTime($param['data_utworzenia']);
         $medicament->setDataUtworzenia($date);
         $date = new DateTime($param['data_modyfikacji']);
