@@ -86,9 +86,9 @@ class ApiController extends AbstractController
 
 
     #[Route('/api/get_api/{OrderBy}', name: 'get_api', methods:"GET")]
-    public function get_api(ManagerRegistry $doctrine): Response
+    public function get_api(ManagerRegistry $doctrine, $OrderBy): Response
     {
-        $data = $doctrine->getRepository(Lekarstwo::class)->findAll();
+        $data = $doctrine->getRepository(Lekarstwo::class)->findBy(array(), array($OrderBy => 'ASC'));
 
         foreach($data as $d){
             $res [] = [
